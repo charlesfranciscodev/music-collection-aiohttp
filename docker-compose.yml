@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  database:
+    build:
+      context: "./database"
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=postgres
