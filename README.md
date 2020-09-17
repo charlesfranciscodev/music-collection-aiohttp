@@ -10,9 +10,36 @@ Run the container(s):
 
 `docker-compose up`
 
+Seed the database:
+
+```shell
+cd server
+python3 init_db.py
+```
+
 Access the database via psql:
 
 `docker-compose exec database psql -U admin`
+
+## Web Server Commands
+
+Create a Python virtual environment:
+
+`python3 -m venv server`
+
+Activate the virtual environment:
+
+```shell
+cd server
+source bin/activate
+```
+
+Start the web server
+
+```shell
+cd server
+python3 app/main.py
+```
 
 ## API Route(s)
 

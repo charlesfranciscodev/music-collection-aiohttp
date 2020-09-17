@@ -1,0 +1,8 @@
+postgres:
+  database: db_dev
+  user: admin
+  password: postgres
+  host: localhost
+  port: 5432
+  minsize: 1
+  maxsize: 5
