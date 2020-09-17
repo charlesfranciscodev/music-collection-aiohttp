@@ -1,6 +1,6 @@
 from views import (
     test_view,
-    get_artists_view, post_artists_view, put_artists_view
+    get_artists_view, post_artists_view, put_artists_view, delete_artists_view
 )
 
 
@@ -10,3 +10,4 @@ def setup_routes(app):
     app.router.add_get("/api/artists", get_artists_view)
     app.router.add_post("/api/artists", post_artists_view)
     app.router.add_put("/api/artists", put_artists_view)
+    app.router.add_delete("/api/artists/{id}", delete_artists_view)
