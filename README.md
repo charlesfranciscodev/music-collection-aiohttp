@@ -34,6 +34,13 @@ cd server
 source bin/activate
 ```
 
+Install dependencies:
+
+```shell
+cd server
+pip3 install requirements.txt
+```
+
 Start the web server
 
 ```shell
