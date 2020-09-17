@@ -115,8 +115,6 @@ Response
 ```
 200 | Artist created successfully
 
-400 | Missing field in request body
-
 ---
 
 #### PUT `/api/artists`
@@ -140,8 +138,6 @@ Response
 }
 ```
 200 | Artist updated successfully
-
-400 | Missing field in request body
 
 404 | Artist does not exist
 
@@ -200,8 +196,6 @@ Response
 ```
 200 | Track created successfully
 
-400 | Missing field in request body
-
 400 | Invalid foreign key
 
 ---
@@ -227,8 +221,6 @@ Response
 }
 ```
 200 | Track updated successfully
-
-400 | Missing field in request body
 
 400 | Invalid foreign key
 
@@ -281,6 +273,9 @@ Response
   }
 ]
 ```
+200 | Success
+
+404 | Artist does not exist
 
 ---
 
@@ -352,8 +347,6 @@ Response
 ```
 200 | Album created successfully
 
-400 | Missing field in request body
-
 400 | Invalid foreign key
 
 ---
@@ -395,8 +388,6 @@ Response
 }
 ```
 200 | Album updated successfully
-
-400 | Missing field in request body
 
 400 | Invalid foreign key
 
