@@ -15,3 +15,20 @@ async def get_artists_view(request):
         records = await cursor.fetchall()
         artists = [dict(record) for record in records]
         return web.json_response(artists)
+
+
+async def post_artists_view(request):
+    async with request.app["db"].acquire() as conn:
+        data = await request.json()
+        result = await conn.execute(
+            db.artists.insert().values(
+                name=data["name"],
+                websiteUrl=data.get("websiteUrl"),
+                location=data.get("location")
+            )
+        )
+        artist = await result.fetchone()
+        return web.json_response({
+            "id": artist[0],
+            "message": "Artist created successfully"
+        })
