@@ -240,7 +240,7 @@ Response
 
 ### Albums
 
-#### GET `/api/albums/{:artist_id}`
+#### GET `/api/albums/artists/{:artist_id}`
 
 Return an array of all music albums for the corresponding artist.
 
@@ -275,7 +275,7 @@ Response
 ```
 200 | Success
 
-404 | Artist does not exist
+400 | Artist does not exist
 
 ---
 
