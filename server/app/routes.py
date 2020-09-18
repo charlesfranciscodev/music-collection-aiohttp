@@ -25,5 +25,5 @@ def setup_routes(app):
     app.router.add_get("/api/albums/artists/{artist_id}", get_albums_view)
     app.router.add_get("/api/albums/{id}", get_album_view)
     app.router.add_post("/api/albums", post_albums_view)
-    # app.router.add_put("/api/albums", put_albums_view)
-    # app.router.add_delete("/api/albums/{id}", delete_albums_view)
+    app.router.add_put("/api/albums", put_albums_view)
+    app.router.add_delete("/api/albums/{id}", delete_albums_view)

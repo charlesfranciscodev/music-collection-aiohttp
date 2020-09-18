@@ -66,8 +66,57 @@ async def post_albums_view(request):
 
 
 async def put_albums_view(request):
-    pass
+    async with request.app["db"].acquire() as conn:
+        # update albums table
+        data = await request.json()
+        result = await conn.execute(
+            db.albums.update()
+            .returning(*db.albums.c)
+            .where(db.albums.c.id == data["id"])
+            .values(
+                name=data["name"],
+                websiteUrl=data["websiteUrl"],
+                artistId=data.get("artistId"),
+                coverArtFileUrl=data.get("coverArtFileUrl"),
+                description=data.get("description"),
+            )
+        )
+        album = await result.fetchone()
+        if not album:
+            raise web.HTTPNotFound(text="Album with id {} does not exist".format(data["id"]))
+
+        # delete all tracks for this album (we will add back tracks to avoid conflicts between the track orders)
+        # this works if we want to delete all tracks, delete some of them, or update them
+        await conn.execute(db.albums_tracks.delete().where(db.albums_tracks.c.albumId == data["id"]))
+
+        # update albums_tracks table
+        if data["tracks"]:
+            cursor = await conn.execute(db.albums_tracks.select().where(db.albums_tracks.c.albumId == data["id"]))
+            prev_album_tracks = await cursor.fetchall()
+            for track in data["tracks"]:
+                # check if the track exists
+                result = await conn.execute(db.tracks.select().where(db.tracks.c.id == track["id"]))
+                record = await result.fetchone()
+                if not record:
+                    raise web.HTTPBadRequest(text="Invalid foreign key: Track id {}".format(track["id"]))
+
+                # create a new albums_tracks entry
+                await conn.execute(db.albums_tracks.insert().values(
+                    albumId=data["id"],
+                    trackId=track["id"],
+                    order=track["order"]
+                ))
+
+        return web.json_response({"message": "Album updated successfully"})
 
 
 async def delete_albums_view(request):
-    pass
+    async with request.app["db"].acquire() as conn:
+        album_id = request.match_info["id"]
+        result = await conn.execute(db.albums.select().where(db.albums.c.id == album_id))
+        album = await result.fetchone()
+        if not album:
+            raise web.HTTPNotFound(text="Album with id {} does not exist".format(album_id))
+
+        await conn.execute(db.albums.delete().where(db.albums.c.id == album_id))
+        return web.HTTPNoContent()
