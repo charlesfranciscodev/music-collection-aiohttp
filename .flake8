@@ -1,0 +1,5 @@
+[flake8]
+exclude =
+    __pycache__
+    server/init_db.py
+max-line-length = 120
